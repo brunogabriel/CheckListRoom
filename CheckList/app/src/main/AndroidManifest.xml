@@ -16,6 +16,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.register.TaskRegisterActivity"/>
+        <activity android:name=".main.creator.TaskCreatorActivity"/>
     </application>
 </manifest>
