@@ -32,7 +32,7 @@ class MainPresenter(var view: MainContract.View, var dao: TaskDao?): MainContrac
         Flowable.fromCallable {
             dao?.insert(task)
         }.onUIAfterIO().subscribe({
-            if (it > -1) {
+            if (it >= 0) {
                 task.id = it
                 view.showTask(task)
             } else {

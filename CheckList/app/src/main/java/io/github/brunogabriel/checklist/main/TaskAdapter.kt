@@ -28,10 +28,9 @@ class TaskAdapter(private val tasks: MutableList<Task>): RecyclerView.Adapter<Ta
 
     fun addTask(task: Task) {
         tasks.add(task)
-        notifyItemInserted(tasks.size - 1)
     }
 
-    class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var checkbox = itemView.checkbox
+    class TaskViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        val checkbox = itemView.checkbox
     }
 }
