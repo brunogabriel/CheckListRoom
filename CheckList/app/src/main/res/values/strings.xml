@@ -2,7 +2,7 @@
     <string name="app_name">Checklist</string>
     <string name="tasks_list_empty_message">No tasks yet!</string>
     <string name="tasks_list_error_message">Error during load tasks =(</string>
-    <string name="tasks_list_insert_error">Fail to create task %1$s</string>
+    <string name="tasks_list_insert_error">Fail to create task</string>
     <string name="creator_hint_title">Task name</string>
     <string name="creator_hint_completed">Completed?</string>
     <string name="creator_create">Create</string>

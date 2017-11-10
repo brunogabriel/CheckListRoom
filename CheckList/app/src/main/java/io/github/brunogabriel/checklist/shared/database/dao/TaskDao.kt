@@ -9,7 +9,7 @@ import io.reactivex.Flowable
  */
 @Dao
 interface TaskDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.FAIL)
     fun insert(task: Task): Long
 
     @Query("SELECT * FROM tasks")

@@ -10,10 +10,15 @@ interface MainContract {
     interface View: BaseView<Presenter> {
         fun showEmptyTasks()
         fun showTasks(tasks: MutableList<Task>)
+        fun showTask(task: Task)
+        fun showCreateTask()
         fun showLoadError()
+        fun showCreateTaskError()
     }
 
     interface Presenter {
         fun initialize()
+        fun onAddTask()
+        fun createTask(task: Task)
     }
 }
