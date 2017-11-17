@@ -26,4 +26,4 @@ This project is structured by using MVP Architecture (Model View Presenter) and 
 
 ## TODO
 
-- [ ] Create Delete to completed CRUD
+- [ ] Create Delete to complete CRUD operations
