@@ -1,10 +1,11 @@
 # CheckListRoom
 
-A very simple example using Kotlin and Room (persistence library)(https://developer.android.com/topic/libraries/architecture/room.html).
+A simple example using Kotlin and Room (persistence library). [`documentation`](https://developer.android.com/topic/libraries/architecture/room.html).
 
 ## Requirements
 
-This project is structured by using MVP Architecture (Model View Presenter) and some basic libraries + tools:
+This project is structured by using MVP Architecture (Model View Presenter) and some basic libraries/tools:
+
     - Room
 	- RxJava 2.1.0
 	- Butterknife (Kotlin implementation)
@@ -13,7 +14,6 @@ This project is structured by using MVP Architecture (Model View Presenter) and 
 	- Rxbinding
 
 ## Showcase
----
 <p align="center">
   <img src="imgs/image1.png" width=200>
   <img src="imgs/image2.png" width=200>
