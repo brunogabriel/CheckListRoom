@@ -3,8 +3,10 @@
     <string name="tasks_list_empty_message">No tasks yet!</string>
     <string name="tasks_list_error_message">Error during load tasks =(</string>
     <string name="tasks_list_insert_error">Fail to create task</string>
+    <string name="task_update_error">Fail to update task</string>
     <string name="creator_hint_title">Task name</string>
     <string name="creator_hint_completed">Completed?</string>
     <string name="creator_create">Create</string>
     <string name="creator_update">Update</string>
+    <string name="update_task_id">Task id %d</string>
 </resources>

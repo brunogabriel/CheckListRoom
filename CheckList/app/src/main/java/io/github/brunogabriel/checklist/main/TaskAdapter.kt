@@ -6,17 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.brunogabriel.checklist.R
 import io.github.brunogabriel.checklist.shared.database.model.Task
+import io.reactivex.functions.BiConsumer
 import kotlinx.android.synthetic.main.holder_task.view.*
 
 /**
  * Created by brunosantos on 09/11/17.
  */
-class TaskAdapter(private val tasks: MutableList<Task>): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(private val tasks: MutableList<Task>,
+                  private val onUpdateSelectAction: BiConsumer<Task, Int>,
+                  private val onCheckSelectAction: BiConsumer<Task, Int>): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
         holder.checkbox.text = task.title
         holder.checkbox.isChecked = task.completed
+        holder.checkbox.setOnCheckedChangeListener { _, _ -> onCheckSelectAction.accept(task, position) }
+        holder.updateImage.setOnClickListener { onUpdateSelectAction.accept(task, position) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -32,5 +37,10 @@ class TaskAdapter(private val tasks: MutableList<Task>): RecyclerView.Adapter<Ta
 
     class TaskViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val checkbox = itemView.checkbox
+        val updateImage = itemView.update_image
+    }
+
+    fun refreshTask(task: Task, position: Int) {
+        tasks[position] = task
     }
 }

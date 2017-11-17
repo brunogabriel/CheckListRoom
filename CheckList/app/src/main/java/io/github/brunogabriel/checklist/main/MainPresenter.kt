@@ -9,7 +9,6 @@ import io.reactivex.Flowable
  * Created by brunosantos on 09/11/17.
  */
 class MainPresenter(var view: MainContract.View, var dao: TaskDao?): MainContract.Presenter {
-
     override fun initialize() {
         dao?.findAll()?.onUIAfterIO()
                 ?.subscribe({
@@ -42,4 +41,47 @@ class MainPresenter(var view: MainContract.View, var dao: TaskDao?): MainContrac
             view.showCreateTaskError()
         })
     }
+
+    override fun updateTask(task: Task, position: Int?) {
+        if (position != null && position >= 0) {
+            Flowable.fromCallable {
+                dao?.update(task)
+            }.onUIAfterIO().subscribe({
+                if (it >= 0) {
+                    view.refreshTask(task, position)
+                } else {
+                    view.showUpdateTaskError()
+                }
+            }, {
+                view.showUpdateTaskError()
+            })
+        } else {
+            view.showUpdateTaskError()
+        }
+    }
+
+    override fun checkTask(task: Task, position: Int) {
+        val previousCompleted = task.completed
+        if (position >= 0) {
+            Flowable.fromCallable {
+                dao?.update(Task(task.id, !task.completed, task.title))
+            }.onUIAfterIO().subscribe({
+                if (it >= 0) {
+                    view.refreshTask(task, position)
+                } else {
+                    view.refreshTask(Task(task.id, previousCompleted, task.title), position)
+                    view.showUpdateTaskError()
+                }
+            }, {
+                view.showUpdateTaskError()
+            })
+        } else {
+            view.showUpdateTaskError()
+        }
+    }
+
+    override fun tryToUpdateTask(task: Task?, position: Int?) {
+        view.showUpdateTask(task, position)
+    }
+
 }

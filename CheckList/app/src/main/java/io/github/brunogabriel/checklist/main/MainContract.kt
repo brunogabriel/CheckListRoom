@@ -12,13 +12,19 @@ interface MainContract {
         fun showTasks(tasks: MutableList<Task>)
         fun showTask(task: Task)
         fun showCreateTask()
+        fun showUpdateTask(task: Task?, position: Int?)
         fun showLoadError()
         fun showCreateTaskError()
+        fun refreshTask(task: Task, position: Int)
+        fun showUpdateTaskError()
     }
 
     interface Presenter {
         fun initialize()
         fun onAddTask()
         fun createTask(task: Task)
+        fun tryToUpdateTask(task: Task?, position: Int?)
+        fun updateTask(task: Task, position: Int?)
+        fun checkTask(task: Task, position: Int)
     }
 }
