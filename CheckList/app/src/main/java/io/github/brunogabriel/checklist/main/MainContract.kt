@@ -17,6 +17,8 @@ interface MainContract {
         fun showCreateTaskError()
         fun refreshTask(task: Task, position: Int)
         fun showUpdateTaskError()
+        fun removeTask(position: Int)
+        fun showRemoveTaskError()
     }
 
     interface Presenter {
@@ -24,7 +26,8 @@ interface MainContract {
         fun onAddTask()
         fun createTask(task: Task)
         fun tryToUpdateTask(task: Task?, position: Int?)
-        fun updateTask(task: Task, position: Int?)
+        fun updateTask(task: Task, position: Int?, delete: Boolean = false)
         fun checkTask(task: Task, position: Int)
+        fun verifyIfListIsEmpty(numberOfItens: Int)
     }
 }

@@ -16,17 +16,20 @@ import io.github.brunogabriel.checklist.shared.component.CustomApplication
 import io.github.brunogabriel.checklist.shared.component.bindView
 import io.github.brunogabriel.checklist.shared.database.model.Task
 import io.reactivex.functions.BiConsumer
+import io.reactivex.functions.Consumer
 import org.jetbrains.anko.toast
 
 /**
  * Created by brunosantos on 09/11/17.
  */
 class MainActivity: AppCompatActivity(), MainContract.View {
+
     companion object {
         const val CREATE = 1000
         const val UPDATE = 1001
         const val TASK_EXTRA = "TASK_EXTRA"
         const val POSITION_EXTRA = "TASK_POSITION"
+        const val DELETE_EXTRA = "TASK_DELETE"
     }
 
     override lateinit var presenter: MainContract.Presenter
@@ -34,7 +37,7 @@ class MainActivity: AppCompatActivity(), MainContract.View {
     val fabAdd: FloatingActionButton by bindView(R.id.fab_add)
     val emptyView: View by bindView(R.id.empty_view)
     val toolbar: Toolbar by bindView(R.id.toolbar)
-    var taskAdapter: TaskAdapter? = null
+    lateinit var taskAdapter: TaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,8 @@ class MainActivity: AppCompatActivity(), MainContract.View {
         fabAdd.setOnClickListener {
             presenter.onAddTask()
         }
+        taskAdapter = createTaskAdapter(mutableListOf())
+        recyclerView.adapter = taskAdapter
         presenter = MainPresenter(this, CustomApplication.appDatabase?.taskDao())
         presenter.initialize()
     }
@@ -60,14 +65,10 @@ class MainActivity: AppCompatActivity(), MainContract.View {
     }
 
     override fun showTasks(tasks: MutableList<Task>) {
-        taskAdapter = createTaskAdapter(tasks)
-        recyclerView.adapter = taskAdapter
+        taskAdapter.addAll(tasks)
     }
 
     override fun showLoadError() {
-        if (taskAdapter == null) {
-            taskAdapter = createTaskAdapter(mutableListOf())
-        }
         toast(getString(R.string.tasks_list_error_message))
     }
 
@@ -76,11 +77,8 @@ class MainActivity: AppCompatActivity(), MainContract.View {
     }
 
     override fun showTask(task: Task) {
-        if (taskAdapter == null) {
-            showTasks(mutableListOf())
-        }
         emptyView.visibility = GONE
-        taskAdapter!!.addTask(task)
+        taskAdapter.addTask(task)
     }
 
     override fun showCreateTaskError() {
@@ -88,27 +86,36 @@ class MainActivity: AppCompatActivity(), MainContract.View {
     }
 
     override fun refreshTask(task: Task, position: Int) {
-        taskAdapter?.refreshTask(task, position)
+        taskAdapter.refreshTask(task, position)
     }
 
     override fun showUpdateTaskError() {
-        toast(getString(R.string.task_update_error))
+        toast(R.string.task_update_error)
     }
 
     override fun showUpdateTask(task: Task?, position: Int?) {
         startActivityForResult(Intent(this, TaskCreatorActivity::class.java).putExtra(TASK_EXTRA, task).putExtra(POSITION_EXTRA, position), UPDATE)
     }
 
+    override fun removeTask(position: Int) {
+        taskAdapter.removeTask(position, Consumer {
+            presenter.verifyIfListIsEmpty(it)
+        })
+    }
+
+    override fun showRemoveTaskError() {
+        toast(R.string.task_delete_error)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val task: Task = data.getParcelableExtra(TASK_EXTRA)
-            val position: Int? = data.getIntExtra(POSITION_EXTRA, -1)
             when(requestCode) {
                 CREATE -> {
                     presenter.createTask(task)
                 }
                 UPDATE -> {
-                    presenter.updateTask(task, position)
+                    presenter.updateTask(task, data.getIntExtra(POSITION_EXTRA, -1), data.getBooleanExtra(DELETE_EXTRA, false))
                 }
             }
         }

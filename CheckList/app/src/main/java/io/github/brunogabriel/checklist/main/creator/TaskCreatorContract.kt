@@ -10,10 +10,12 @@ interface TaskCreatorContract {
     interface View: BaseView<Presenter> {
         fun fillUpdateTask(completed: Boolean, title: String, id: Long)
         fun showTask(task: Task, position: Int?)
+        fun deleteTask(Task: Task, position: Int?)
     }
 
     interface Presenter {
         fun initialize()
         fun saveTask(checked: Boolean, title: String)
+        fun deleteTask()
     }
 }
