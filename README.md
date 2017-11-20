@@ -1,6 +1,6 @@
 # CheckListRoom
 
-A simple example using Kotlin and Room (persistence library). [`documentation`](https://developer.android.com/topic/libraries/architecture/room.html).
+A simple example using Kotlin and [Room persistence library](https://developer.android.com/topic/libraries/architecture/room.html).
 
 ## Requirements
 
@@ -20,7 +20,3 @@ This project is structured by using MVP Architecture (Model View Presenter) and 
   <img src="imgs/image3.png" width=200>
   <img src="imgs/image4.png" width=200>
 </p>
-
-## TODO
-
-- [ ] Create Delete to complete CRUD operations
